@@ -1,0 +1,142 @@
+<html>
+<head>
+<script src="https://cdn.socket.io/socket.io-1.4.3.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+	var config = require('./config');
+	$.fn.serializeObject = function()
+	{
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function() {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    return o;
+	};
+
+	$(function() {
+	    $('form').submit(function() {
+	        $('#result').text(JSON.stringify($('form').serializeObject()));
+	        return false;
+	    });
+	});
+		//TODO get the localhost params
+    var socket = io.connect(config.server.connection);    
+    var maxId;
+    socket.on("maxid",function(maxid){
+    	maxId = maxid;
+    	document.getElementById("id").value = parseInt(maxId) + 1;
+    });
+
+
+    function insertNewUpdate(){
+    	var serialized = $("#insertform").serializeObject();
+    	console.log(serialized);
+    	socket.emit('insert',serialized);
+    }
+</script>
+</head>
+<body>
+
+	<!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!-- Inline CSS based on choices in "Settings" tab -->
+<style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+
+<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+<div class="bootstrap-iso">
+ <div class="container-fluid">
+  <div class="row">
+   <div class="col-md-6 col-sm-6 col-xs-12">
+    <form  id="insertform">
+     <div class="form-group ">
+      <label class="control-label requiredField" for="id">
+       Id
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <input class="form-control" id="id" name="id" readonly="true" type="number" value=/>
+      <span class="help-block" id="hint_name">
+       Auto Generated Id
+      </span>
+     </div>
+     <div class="form-group ">
+      <label class="control-label requiredField" for="heading">
+       Heading
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <input class="form-control" id="heading" name="heading" placeholder="Awesome Update" type="text"/>
+      <span class="help-block" id="hint_heading">
+       Heading of the update
+      </span>
+     </div>
+     <div class="form-group ">
+      <label class="control-label " for="datePublished">
+       Date of Publishing
+      </label>
+      <input class="form-control" id="datePublished" name="datePublished" placeholder="MM/DD/YYYY" type="text"/>
+      <span class="help-block" id="hint_date">
+       This is the date of publishing to be shown to the user. Can be left blank if current date is to be picked up.
+      </span>
+     </div>
+     <div class="form-group ">
+      <label class="control-label " for="tagList">
+       Tags
+      </label>
+      <input class="form-control" id="tagList" name="tagList" placeholder="Tag1,Tag2" type="text"/>
+      <span class="help-block" id="hint_tags">
+       Comma separated strings indicating the tags to which this update belongs to
+      </span>
+     </div>
+     <div class="form-group ">
+      <label class="control-label requiredField" for="content">
+       Message
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <textarea class="form-control" cols="40" id="content" name="content" placeholder='This awesome update was made by someone! &lt;a href="#"&gt;Yes&lt;/a&gt;' rows="10"></textarea>
+      <span class="help-block" id="hint_message">
+       Insert the actual update content here. This can be a HTML code which will be rendered to the user
+      </span>
+     </div>
+     <div class="form-group ">
+      <label class="control-label requiredField" for="authorName">
+       Author
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <input class="form-control" id="authorName" name="authorName" placeholder="Author Name" type="text"/>
+      <span class="help-block" id="hint_name1">
+       Name of the author of the update.
+      </span>
+     </div>
+     <div class="form-group">
+      <div>
+       <button class="btn btn-primary"  onclick="insertNewUpdate()">
+        Submit
+       </button>
+      </div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+</div>
+
+
+</body>
+</html>

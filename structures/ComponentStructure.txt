@@ -1,0 +1,14 @@
+UpdateCardList
+	UpdateCard
+		-Header
+			--Heading
+				---ReadTicker
+				---HeadingText
+			--Date
+		-TagList
+		-HtmlContent
+		-Footer
+			--HeartCounter
+			--Author
+				---Name
+				---Pic

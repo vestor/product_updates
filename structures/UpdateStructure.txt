@@ -1,0 +1,37 @@
+{
+	authorName : String,
+	authorPic : String,
+	content : String,
+	tagList : [String,String...],
+	heading : String,
+	read : [String,String...],
+	datePublished : Date,
+	hearts : [String, String...]
+}
+
+
+
+Update
+	-authorName=>String
+	-authorPic=>String
+	-content=>String
+	-tagList=>List<String>
+	-heading=>String
+	-read=>List<String>
+	-datePublished=>Date
+	-heartCount=>List<String>
+
+
+
+Example:
+{
+	authorName : "Manish",
+	authorPic : "",
+	content : "Well, bro this is a something thingamajig",
+	tagList : ["awesome","article"],
+	heading : "An awesome article",
+	read : [],
+	datePublished : "2015-11-01",
+	hearts : [],
+	id : 1
+}
